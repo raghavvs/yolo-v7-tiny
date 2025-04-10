@@ -2,6 +2,7 @@
 
 Directory structure 
 
+```
 yolov7/                  
     ├── datasets/
     │   ├── v1/
@@ -21,6 +22,7 @@ yolov7/
     │   │   └── config.yaml
     │   └── ...
     └── yolov7-venv/
+```
 
 data.yml setup example
 

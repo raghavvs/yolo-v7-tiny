@@ -68,6 +68,8 @@ ln 87: ckpt = torch.load(weights, map_location=device, weights_only=False)  # tr
 
 To train
 ```
+!run the command from /yolov7
+
 python train.py \
   --workers 8 \
   --device 0 \

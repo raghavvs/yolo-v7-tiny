@@ -1,3 +1,84 @@
+### YOLOv7-Tiny
+
+Directory structure 
+
+yolov7/                  
+    ├── datasets/
+    │   ├── v1/
+    │   │   ├── images/
+    │   │   │   ├── train/
+    │   │   │   └── val/
+    │   │   ├── labels/
+    │   │   │   ├── train/
+    │   │   │   └── val/
+    │   │   └── data.yaml
+    │   ├── v2/
+    │   │   └── ...
+    ├── training_runs/
+    │   ├── v1_yolov7t/
+    │   │   ├── weights/
+    │   │   ├── results/
+    │   │   └── config.yaml
+    │   └── ...
+    └── yolov7-venv/
+
+data.yml setup example
+
+```
+train: /absolute/path/to/datasets/v1/images/train
+val: /absolute/path/to/datasets/v1/images/val
+
+nc: 1
+names: ['class_name']
+```
+
+Python 3.12 is not compatible with numpy 1.24 and numpy <1.24.0 is required by yolov7
+Fix: use Python 3.10.13
+
+```
+pyenv install 3.10.13
+cd ~/yolov7
+pyenv local 3.10.13
+```
+
+Create virtual environment
+
+```
+python -m venv yolov7-venv
+source yolv7-venv/bin/activate
+```
+
+Install 
+
+```
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Update train.py when using PyTorch >=2.6 
+
+```
+# train.py
+
+ln71: run_id = torch.load(weights, map_location=device, weights_only=False).get('wandb_id') if weights.endswith('.pt') and os.path.isfile(weights) else None
+ln 87: ckpt = torch.load(weights, map_location=device, weights_only=False)  # trust this checkpoint
+```
+
+To train
+```
+python train.py \
+  --workers 8 \
+  --device 0 \
+  --batch-size 16 \
+  --img 640 640 \
+  --cfg cfg/training/yolov7-tiny.yaml \
+  --weights yolov7-tiny.pt \
+  --data datasets/v1/data.yaml \
+  --name v1_yolov7t \
+  --project training_runs \
+  --hyp data/hyp.scratch.tiny.yaml
+```
+
 # Official YOLOv7
 
 Implementation of paper - [YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors](https://arxiv.org/abs/2207.02696)
